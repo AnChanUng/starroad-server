@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class PolicyHeart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "policy_heart_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "policy_heart_seq")
     @SequenceGenerator(name = "policy_heart_seq", sequenceName = "POLICY_HEART_SEQ", allocationSize = 1)
     @Column(name = "no")
     private int no;

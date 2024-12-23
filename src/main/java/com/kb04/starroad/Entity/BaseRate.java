@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class BaseRate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "base_rate_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "base_rate_seq")
     private int no;
 
     @Column(name = "min_period", nullable = false)

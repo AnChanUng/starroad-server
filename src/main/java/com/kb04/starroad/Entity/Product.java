@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "product_seq")
     @Column(nullable = false)
     private int no;
 

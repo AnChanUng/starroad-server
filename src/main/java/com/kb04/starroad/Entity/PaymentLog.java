@@ -16,7 +16,7 @@ import java.util.Date;
 public class PaymentLog {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="payment_log_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator="payment_log_seq")
     private int no;
 
     @ManyToOne(fetch = FetchType.LAZY)

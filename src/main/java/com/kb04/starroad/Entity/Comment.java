@@ -15,7 +15,7 @@ import java.util.Date;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "comment_seq")
     @SequenceGenerator(name = "comment_seq", sequenceName = "COMMENT_SEQ", allocationSize = 1)
     @Column(name = "no")
     private int no;

@@ -14,7 +14,7 @@ import java.util.Date;
 public class Policy {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "policy_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "policy_seq")
     private int no;
 
     @Column(nullable = false)

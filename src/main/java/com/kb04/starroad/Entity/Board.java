@@ -18,7 +18,7 @@ import java.util.List;
 public class Board {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "board_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "board_seq")
     @SequenceGenerator(name = "board_seq", sequenceName = "BOARD_SEQ", allocationSize = 1)
     @Column(name = "no")
     private int no;

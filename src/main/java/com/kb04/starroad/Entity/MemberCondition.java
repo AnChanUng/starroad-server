@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class MemberCondition {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_condition_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "member_condition_seq")
     @SequenceGenerator(name = "member_condition_seq", sequenceName = "MEMBER_CONDITION_SEQ", allocationSize = 1)
     @Column(name = "no")
     private int no;

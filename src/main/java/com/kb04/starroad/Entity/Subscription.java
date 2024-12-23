@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class Subscription {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "subscription_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "subscription_seq")
     private int no;
 
     @ManyToOne(fetch = FetchType.LAZY)

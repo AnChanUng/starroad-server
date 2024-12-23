@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "member_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "member_seq")
     @SequenceGenerator(name = "member_seq", sequenceName = "member_seq", allocationSize = 1)
     @Column(name = "no", nullable = false)
     private int no;
