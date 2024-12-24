@@ -11,6 +11,8 @@ import com.kb04.starroad.Repository.HeartRepository;
 import com.kb04.starroad.Repository.MemberRepository;
 import com.kb04.starroad.Repository.Specification.BoardSpecification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,7 @@ import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -214,15 +217,9 @@ public class BoardService {
      * 게시물 상세 보기
      * @param no 게시물 번호
      */
-    public BoardResponseDto detailBoard(int no){
-
+    public BoardResponseDto showDetailBoard(int no){
         Board board = boardRepository.findByNo(no);
-        if (board == null) return null;
-
-        BoardResponseDto resultDto = board.toBoardResponseDto();
-        List<CommentDto> comments = commentService.findByBoard(board);
-        resultDto.setComments(comments);
-        return resultDto;
+        return BoardResponseDto.from(board);
     }
 
     /**
@@ -254,5 +251,5 @@ public class BoardService {
                 .member(member)
                 .board(board)
                 .build());
-        }
+    }
 }

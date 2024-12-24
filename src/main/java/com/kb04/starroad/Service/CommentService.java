@@ -1,7 +1,5 @@
 package com.kb04.starroad.Service;
 
-import com.kb04.starroad.Dto.board.BoardRequestDto;
-import com.kb04.starroad.Dto.board.BoardResponseDto;
 import com.kb04.starroad.Dto.board.CommentDto;
 import com.kb04.starroad.Entity.Board;
 import com.kb04.starroad.Entity.Comment;
@@ -9,7 +7,7 @@ import com.kb04.starroad.Entity.Member;
 import com.kb04.starroad.Repository.BoardRepository;
 import com.kb04.starroad.Repository.CommentRepository;
 import com.kb04.starroad.Repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,27 +17,15 @@ import java.util.Optional;
 
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
-
-    @Autowired
-    private BoardRepository boardRepository;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    public List<CommentDto> findByBoard(Board board) {
-
-        return commentRepository.findByBoardOrderByRegdate(board);
-    }
-
-
+    private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public int createComment(String content, int boardNo, int currentUserNo) {
-
         CommentDto newComment = new CommentDto();
 
         newComment.setContent(content);
@@ -54,7 +40,6 @@ public class CommentService {
     }
 
     public CommentDto getCommentById(int commentNo) {
-
         Comment comment = commentRepository.findById(commentNo).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다"));
         return comment.toCommentDto();
     }
@@ -63,7 +48,6 @@ public class CommentService {
         if (commentOptional.isPresent()) {
             return commentOptional.get().toCommentDto();
         } else {
-            // 여기에서 적절한 예외를 던지거나 null을 반환할 수 있습니다.
             throw new NoSuchElementException("No Comment found with given id");
         }
     }
@@ -93,7 +77,6 @@ public class CommentService {
 
     @Transactional
     public void increaseCommentCount(int boardNo) {
-
         Optional<Board> optionalBoard = boardRepository.findById(boardNo);
         if (optionalBoard != null) {
             Board board = optionalBoard.get();
@@ -132,4 +115,3 @@ public class CommentService {
         return false;
     }
 }
-

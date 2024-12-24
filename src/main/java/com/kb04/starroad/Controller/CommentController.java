@@ -9,7 +9,6 @@ import com.kb04.starroad.Service.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import springfox.documentation.annotations.ApiIgnore;
@@ -20,11 +19,7 @@ import java.util.Optional;
 @Api(tags = {"댓글 API"})
 @RestController
 public class CommentController {
-
-    @Autowired
     private CommentService commentService;
-
-    @Autowired
     private BoardService boardService;
 
     @ApiOperation(value = "댓글 생성", notes = "댓글을 생성 할 수 있다")
@@ -53,18 +48,15 @@ public class CommentController {
         return mav;
     }
 
-    // 조회
     @ApiOperation(value = "댓글 조회", notes = "댓글을 조회 할 수 있다")
     @GetMapping("/starroad/comment")
     public ModelAndView getCommentByBoard(@ApiParam(value = "댓글 번호", example = "1") @RequestParam("no") int commentNo,
                                           @ApiIgnore HttpSession session) {
-
         if (session.getAttribute("currentUser") == null) {
             ModelAndView mav = new ModelAndView("redirect:/starroad/login");
             mav.addObject("message", "로그인 후에 댓글을 작성할 수 있습니다.");
             return mav;
         }
-
         CommentDto commentDto = commentService.getCommentById(commentNo);
         ModelAndView mav = new ModelAndView("board/detail?no=" + commentNo);
         mav.addObject("comment", commentDto);
@@ -108,7 +100,7 @@ public class CommentController {
             Comment comment = commentOptional.get();
             CommentDto commentDto = comment.toCommentDto();
             mav.addObject("comment", commentDto);
-            BoardResponseDto dto = boardService.detailBoard(boardNo);
+            BoardResponseDto dto = boardService.showDetailBoard(boardNo);
             if(dto.getComments().equals(null)) mav.addObject("noComments", true);
             mav.addObject("board", dto);
         } else {

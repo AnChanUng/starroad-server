@@ -14,31 +14,13 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpecificationExecutor<Board> {
-
     Optional<Board> findById(int no);
     Board findByNo(int no);
-    Page<Board> findAllByStatusAndLikesGreaterThanEqualAndRegdateAfterOrderByLikesDesc(
-            char status, int minLikes, Date oneWeekAgo, Pageable pageable
-    );
+    Page<Board> findAllByStatusAndLikesGreaterThanEqualAndRegdateAfterOrderByLikesDesc(char status, int minLikes, Date oneWeekAgo, Pageable pageable);
     List<Board> findAllByStatusOrderByLikesDesc(Character status);
     List<Board> findAllByStatusAndLikesGreaterThanEqualAndRegdateAfterOrderByLikesDesc(char status, int minLikes, Date oneWeekago);
-
-
-
-
     Page<Board> findByTypeAndStatus(String type,Character status, Pageable pageable);
-
-
     Page<Board> findAllByStatusOrderByLikesDesc(Character status,Pageable pageable);
-
-
-
     List<Board> findAllByMemberNoOrderByRegdate(Member memberNo);
-
-
     Page<Board> findAllByTypeAndStatusOrderByRegdateDesc(String f, char y, Pageable pageable);
-
-
-
-
 }

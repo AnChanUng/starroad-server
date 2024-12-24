@@ -2,13 +2,14 @@ package com.kb04.starroad.Controller;
 
 import com.kb04.starroad.Dto.MemberDto;
 import com.kb04.starroad.Dto.board.BoardResponseDto;
-import com.kb04.starroad.Dto.board.CommentDto;
-import com.kb04.starroad.Entity.Board;
 import com.kb04.starroad.Service.BoardService;
 import com.kb04.starroad.Service.CommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -20,24 +21,16 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Api(tags = "게시판 API")
 @RestController
+@RequiredArgsConstructor
 public class BoardController {
 
-
     private final BoardService boardService;
-
     private final CommentService commentService;
-
-    public BoardController(BoardService boardService, CommentService commentService) {
-        this.boardService = boardService;
-        this.commentService = commentService;
-    }
-
 
     @ApiOperation(value = "게시판 메인", notes = "게시판 메인화면을 보여줍니다")
     @GetMapping("/starroad/board/main")
@@ -96,16 +89,12 @@ public class BoardController {
 
     @ApiOperation(value = "인기게시판", notes = "인기게시판을 보여줍니다")
     @GetMapping("/starroad/board/popular")
-    public ModelAndView popularBoardList(
-            @ApiIgnore HttpServletRequest request) {
+    public ModelAndView popularBoardList(@ApiIgnore HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("board/board");
-
         List<BoardResponseDto> boardList = boardService.selectPopularBoard();
-
         mav.addObject("popularBoardPage", boardList);
         mav.addObject("type", "popular");
-
         return mav;
     }
 
@@ -220,15 +209,19 @@ public class BoardController {
     @ApiOperation(value = "게시글 상세", notes = "게시글을 상세를 볼 수 있습니다")
     @GetMapping("/starroad/board/detail")
     public ModelAndView getBoardDetail(@ApiParam(value = "게시글 번호") @RequestParam("no") int no) {
+        log.info("게시글 번호: {}", no);
+        ModelAndView mav = new ModelAndView("board/detail");
 
-        ModelAndView mav = new ModelAndView();
-        mav = new ModelAndView("board/detail");
-
-        BoardResponseDto dto = boardService.detailBoard(no);
-        //if(dto.equals(null)) mav.addObject("error", "게시글을 찾을 수 없습니다.");
-        if(dto.getComments().equals(null)) mav.addObject("noComments", true);
+        BoardResponseDto dto = boardService.showDetailBoard(no);
+        if(dto == null) {
+            mav.addObject("error", "게시글을 찾을 수 없습니다.");
+            log.warn("게시물을 찾을 수 없습니다. 번호: {}", no);
+        }
+        if(dto.getComments() == null) {
+            mav.addObject("noComments", true);
+        }
         mav.addObject("board", dto);
-
+        log.info("게시글 상세 정보 반환: {}", dto);
         return mav;
     }
 
