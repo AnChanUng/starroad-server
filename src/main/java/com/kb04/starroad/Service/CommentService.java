@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -26,17 +26,19 @@ public class CommentService {
 
     @Transactional
     public int createComment(String content, int boardNo, int currentUserNo) {
-        CommentDto newComment = new CommentDto();
+        Board board = boardRepository.findByNo(boardNo);
+        Member member = memberRepository.findByNo(currentUserNo);
 
-        newComment.setContent(content);
-        newComment.setRegdate(new java.util.Date());
-        newComment.setMember(memberRepository.findByNo(currentUserNo));
-        newComment.setBoard(boardRepository.findByNo(boardNo));;
+        CommentDto newCommentDto = CommentDto.builder()
+                .content(content)
+                .regdate(new Date())
+                .board(board)
+                .member(member)
+                .build();
 
-        Comment comment = newComment.toEntity();
-
+        Comment comment = CommentDto.from(newCommentDto.toEntity()).toEntity();
         commentRepository.save(comment);
-        return comment.getBoard().getNo();
+        return board.getNo();
     }
 
     public CommentDto getCommentById(int commentNo) {
@@ -51,14 +53,12 @@ public class CommentService {
             throw new NoSuchElementException("No Comment found with given id");
         }
     }
-    @Transactional
-    public void updateComment(CommentDto commentDto) {
-
-        Optional<Comment> optionalcomment = commentRepository.findByNo(commentDto.getNo());
-
-        Comment comment2 = optionalcomment.get();
-        comment2.update(commentDto.getContent());
-    }
+//    @Transactional
+//    public void updateComment(CommentDto commentDto) {
+//        Optional<Comment> optionalcomment = commentRepository.findByNo(commentDto.getNo());
+//        Comment comment2 = optionalcomment.get();
+//        comment2.update(commentDto.getContent());
+//    }
 
     @Transactional
     public int deleteComment(int commentNo) {

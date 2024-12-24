@@ -46,20 +46,5 @@ public class BoardRequestDto {
                 .member(this.member)
                 .build();
     }
-
-    /*//고민
-    public static BoardResponseDto fromEntity(Board board) {
-        BoardResponseDto dto = new BoardResponseDto();
-        dto.setNo(board.getNo());
-        dto.setTitle(board.getTitle());
-        dto.setRegdate(board.getRegdate());
-        dto.setContent(board.getContent());
-        dto.setLikes(board.getLikes());
-        dto.setCommentNum(board.getCommentNum());
-        dto.setType(board.getType());
-        dto.setDetailType(board.getDetailType());
-        return dto;
-    }*/
-
 }
 

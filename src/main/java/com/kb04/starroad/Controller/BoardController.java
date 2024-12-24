@@ -8,7 +8,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -90,7 +89,6 @@ public class BoardController {
     @ApiOperation(value = "인기게시판", notes = "인기게시판을 보여줍니다")
     @GetMapping("/starroad/board/popular")
     public ModelAndView popularBoardList(@ApiIgnore HttpServletRequest request) {
-
         ModelAndView mav = new ModelAndView("board/board");
         List<BoardResponseDto> boardList = boardService.selectPopularBoard();
         mav.addObject("popularBoardPage", boardList);
@@ -209,19 +207,15 @@ public class BoardController {
     @ApiOperation(value = "게시글 상세", notes = "게시글을 상세를 볼 수 있습니다")
     @GetMapping("/starroad/board/detail")
     public ModelAndView getBoardDetail(@ApiParam(value = "게시글 번호") @RequestParam("no") int no) {
-        log.info("게시글 번호: {}", no);
         ModelAndView mav = new ModelAndView("board/detail");
-
         BoardResponseDto dto = boardService.showDetailBoard(no);
         if(dto == null) {
             mav.addObject("error", "게시글을 찾을 수 없습니다.");
-            log.warn("게시물을 찾을 수 없습니다. 번호: {}", no);
         }
         if(dto.getComments() == null) {
             mav.addObject("noComments", true);
         }
         mav.addObject("board", dto);
-        log.info("게시글 상세 정보 반환: {}", dto);
         return mav;
     }
 

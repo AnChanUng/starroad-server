@@ -2,7 +2,6 @@ package com.kb04.starroad.Service;
 
 import com.kb04.starroad.Dto.board.BoardRequestDto;
 import com.kb04.starroad.Dto.board.BoardResponseDto;
-import com.kb04.starroad.Dto.board.CommentDto;
 import com.kb04.starroad.Entity.Board;
 import com.kb04.starroad.Entity.Heart;
 import com.kb04.starroad.Entity.Member;
@@ -11,18 +10,13 @@ import com.kb04.starroad.Repository.HeartRepository;
 import com.kb04.starroad.Repository.MemberRepository;
 import com.kb04.starroad.Repository.Specification.BoardSpecification;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -40,9 +34,7 @@ public class BoardService {
      */
     public Page<Board> boardListFree(Pageable pageable) {
         Page<Board> boardList;
-
         boardList = boardRepository.findAllByTypeAndStatusOrderByRegdateDesc("F", 'Y', pageable);
-
         return boardList;
     }
 
@@ -88,18 +80,6 @@ public class BoardService {
     /**
      * 게시판 모든 글 출력 - 인기글
      */
-//    public List<BoardResponseDto> selectPopularBoard() {
-//        List<Board> boardList = boardRepository.findAllByStatusOrderByLikesDesc('Y');
-//        List<BoardResponseDto> dtoList = new ArrayList<>();
-//
-//        for(Board board : boardList) {
-//            dtoList.add(board.toBoardResponseDto());
-//        }
-//        return dtoList;
-//    }
-
-
-    // 게시판 모든 글 출력 - 인기글
     public List<BoardResponseDto> selectPopularBoard() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -7);
